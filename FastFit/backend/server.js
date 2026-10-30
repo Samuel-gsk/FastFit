@@ -12,9 +12,11 @@ require("./database/connection");
 // Rotas
 const receitasRoutes = require("./routes/receitas");
 const favoritosRoutes = require("./routes/favoritos");
+const usuariosRoutes =require("./routes/usuarios");
 
 app.use("/receitas", receitasRoutes);
 app.use("/favoritos", favoritosRoutes);
+app.use("/usuarios", usuariosRoutes);
 
 // Middlewares
 app.use(cors());
