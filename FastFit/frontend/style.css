@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body{
+    background: #f8fafc;
+    color: #1e293b;
+}
+
+/* NAVBAR */
+
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 20px 8%;
+
+    background: #ffffff;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar h1{
+    color: #14b8a6;
+    font-size: 2rem;
+}
+
+.navbar ul{
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.navbar a{
+    text-decoration: none;
+    color: #334155;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.navbar a:hover{
+    color: #14b8a6;
+}
+
+/* HERO */
+
+.hero{
+    min-height: 85vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    color: white;
+
+    background: linear-gradient(
+        135deg,
+        #14b8a6,
+        #0f766e
+    );
+}
+
+.hero-content{
+    max-width: 800px;
+}
+
+.hero h2{
+    font-size: 4rem;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero p{
+    font-size: 1.2rem;
+    margin-bottom: 35px;
+    opacity: .9;
+}
+
+.hero button{
+    padding: 15px 35px;
+    border: none;
+
+    border-radius: 50px;
+
+    background: white;
+    color: #0f766e;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .3s;
+}
+
+.hero button:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0,0,0,.15);
+}
+
+/* SEÇÕES */
+
+.beneficios,
+.receitas{
+    padding: 90px 8%;
+}
+
+.beneficios h2,
+.receitas h2{
+    text-align: center;
+    font-size: 2.5rem;
+    color: #0f766e;
+    margin-bottom: 50px;
+}
+
+/* CARDS */
+
+.cards{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.card{
+    width: 320px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 30px;
+
+    box-shadow: 0 8px 20px rgba(0,0,0,.08);
+
+    transition: .3s;
+}
+
+.card:hover{
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(20,184,166,.2);
+}
+
+.card h3{
+    color: #14b8a6;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.card p{
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* DESTAQUE RECEITAS */
+
+.receitas{
+    background: white;
+}
+
+/* FOOTER */
+
+footer{
+    background: #0f766e;
+    color: white;
+
+    text-align: center;
+
+    padding: 30px;
+}
+
+/* RESPONSIVO */
+
+@media(max-width: 768px){
+
+    .navbar{
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .hero h2{
+        font-size: 2.5rem;
+    }
+
+    .hero p{
+        font-size: 1rem;
+        padding: 0 20px;
+    }
+
+    .cards{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card{
+        width: 90%;
+    }
+}
+
+/* ===================== */
+/* RECEITAS */
+/* ===================== */
+
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.container h2 {
+    color: #0f766e;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.barra-controle {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.barra-controle input {
+    width: 300px;
+    padding: 12px;
+    border: 2px solid #14b8a6;
+    border-radius: 10px;
+    outline: none;
+}
+
+.barra-controle select {
+    padding: 12px;
+    border: 2px solid #14b8a6;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.barra-controle button {
+    background: #14b8a6;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.barra-controle button:hover {
+    background: #0f766e;
+}
+
+/* TABELA */
+
+#tabelaReceitas {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.1);
+}
+
+#tabelaReceitas thead {
+    background: #14b8a6;
+    color: white;
+}
+
+#tabelaReceitas th,
+#tabelaReceitas td {
+    padding: 15px;
+    text-align: center;
+}
+
+#tabelaReceitas tbody tr {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+#tabelaReceitas tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* BOTÕES DA TABELA */
+
+#tabelaReceitas button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 2px;
+    font-weight: bold;
+}
+
+#tabelaReceitas button:first-child {
+    background: #3b82f6;
+    color: white;
+}
+
+#tabelaReceitas button:nth-child(2) {
+    background: #facc15;
+}
+
+#tabelaReceitas button:last-child {
+    background: #ef4444;
+    color: white;
+}
+
+/* RESPONSIVO */
+
+@media(max-width: 768px){
+
+    .barra-controle {
+        flex-direction: column;
+    }
+
+    .barra-controle input {
+        width: 100%;
+    }
+
+    #tabelaReceitas {
+        font-size: 0.85rem;
+    }
+
+}

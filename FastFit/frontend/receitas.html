@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receitas - FastFit</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar">
+
+            <h1>FastFit</h1>
+
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="receitas.html">Receitas</a></li>
+                <li><a href="planejamento.html">Planejamento</a></li>
+                <li><a href="favoritos.html">Favoritos</a></li>
+            </ul>
+
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <h2>Receitas Saudáveis</h2>
+
+        <div class="barra-controle">
+
+            <button id="btnMostrar">
+                Mostrar Receitas
+            </button>
+
+            <input
+                type="text"
+                id="pesquisa"
+                placeholder="🔍 Pesquise uma receita..."
+            >
+
+            <select id="filtro">
+
+                <option value="">
+                    Ordenar por
+                </option>
+
+                <option value="az">
+                    A-Z
+                </option>
+
+                <option value="calorias">
+                    Menor Caloria
+                </option>
+
+                <option value="custo">
+                    Menor Custo
+                </option>
+
+            </select>
+
+        </div>
+
+        <table id="tabelaReceitas">
+
+            <thead>
+
+                <tr>
+
+                    <th>Nome</th>
+                    <th>Calorias</th>
+                    <th>Custo</th>
+                    <th>Ações</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="tbodyReceitas">
+
+            </tbody>
+
+        </table>
+
+    </main>
+
+    <script src="receitas.js"></script>
+
+</body>
+
+</html>
