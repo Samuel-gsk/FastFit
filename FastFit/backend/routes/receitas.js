@@ -1,192 +1,320 @@
-const express = require("express");
-const router = express.Router();
+const api = "http://localhost:3000/receitas";
 
-const connection = require("../database/connection");
+let receitasGlobais = [];
 
-// Listar todas as receitas
-router.get("/", (req, res) => {
+document.addEventListener("DOMContentLoaded", () => {
 
-    const sql = "SELECT * FROM receitas";
+    const btnMostrar = document.getElementById("btnMostrar");
 
-    connection.query(sql, (erro, resultados) => {
+    if (btnMostrar) {
+        btnMostrar.addEventListener(
+            "click",
+            carregarReceitas
+        );
+    }
 
-        if (erro) {
-            console.error(erro);
-            return res.status(500).json({
-                mensagem: "Erro ao buscar receitas."
-            });
-        }
+    const campoPesquisa =
+        document.getElementById("pesquisa");
 
-        res.status(200).json(resultados);
-    });
+    if (campoPesquisa) {
+        campoPesquisa.addEventListener(
+            "input",
+            pesquisar
+        );
+    }
 
-});
+    const filtro =
+        document.getElementById("filtro");
 
-// Buscar receita por ID
-router.get("/:id", (req, res) => {
-
-    const { id } = req.params;
-
-    const sql = "SELECT * FROM receitas WHERE id_receita = ?";
-
-    connection.query(sql, [id], (erro, resultados) => {
-
-        if (erro) {
-            console.error(erro);
-            return res.status(500).json({
-                mensagem: "Erro ao buscar receita."
-            });
-        }
-
-        if (resultados.length === 0) {
-            return res.status(404).json({
-                mensagem: "Receita não encontrada."
-            });
-        }
-
-        res.status(200).json(resultados[0]);
-    });
+    if (filtro) {
+        filtro.addEventListener(
+            "change",
+            filtrar
+        );
+    }
 
 });
 
-// Cadastrar receita
-router.post("/", (req, res) => {
+async function carregarReceitas() {
 
-    const {
-        nome_receita,
-        descricao,
-        ingredientes,
-        modo_preparo,
-        tempo_preparo,
-        calorias,
-        custo_estimado,
-        id_categoria
-    } = req.body;
+    try {
 
-    const sql = `
-        INSERT INTO receitas
-        (
-            nome_receita,
-            descricao,
-            ingredientes,
-            modo_preparo,
-            tempo_preparo,
-            calorias,
-            custo_estimado,
-            id_categoria
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+        const resposta =
+            await fetch(api);
 
-    connection.query(
-        sql,
-        [
-            nome_receita,
-            descricao,
-            ingredientes,
-            modo_preparo,
-            tempo_preparo,
-            calorias,
-            custo_estimado,
-            id_categoria
-        ],
-        (erro, resultado) => {
+        receitasGlobais =
+            await resposta.json();
 
-            if (erro) {
-                console.error(erro);
-                return res.status(500).json({
-                    mensagem: "Erro ao cadastrar receita."
-                });
-            }
+        renderizarReceitas(
+            receitasGlobais
+        );
 
-            res.status(201).json({
-                mensagem: "Receita cadastrada com sucesso!",
-                id_receita: resultado.insertId
-            });
-        }
+    }
+
+    catch (erro) {
+
+        console.error(
+            "Erro ao carregar receitas:",
+            erro
+        );
+
+        alert(
+            "Erro ao carregar receitas."
+        );
+
+    }
+
+}
+
+function renderizarReceitas(receitas) {
+
+    const tbody =
+        document.getElementById(
+            "tbodyReceitas"
+        );
+
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    receitas.forEach(receita => {
+
+        tbody.innerHTML += `
+
+            <tr>
+
+                <td>
+                    ${receita.nome_receita}
+                </td>
+
+                <td>
+                    ${receita.calorias}
+                </td>
+
+                <td>
+                    R$ ${receita.custo_estimado}
+                </td>
+
+                <td>
+
+                    <button
+                        onclick="mostrarDetalhes(${receita.id_receita})"
+                    >
+                        Ver
+                    </button>
+
+                    <button
+                        onclick="favoritar(${receita.id_receita})"
+                    >
+                        ⭐
+                    </button>
+
+                    <button
+                        onclick="excluirReceita(${receita.id_receita})"
+                    >
+                        🗑
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+function mostrarDetalhes(id) {
+
+    const receita =
+        receitasGlobais.find(
+            r => r.id_receita == id
+        );
+
+    if (!receita) return;
+
+    alert(
+
+`Nome: ${receita.nome_receita}
+
+Descrição:
+${receita.descricao}
+
+Ingredientes:
+${receita.ingredientes}
+
+Modo de preparo:
+${receita.modo_preparo}
+
+Tempo:
+${receita.tempo_preparo} minutos
+
+Calorias:
+${receita.calorias}
+
+Custo:
+R$ ${receita.custo_estimado}`
+
     );
-});
 
-// Atualizar receita
-router.put("/:id", (req, res) => {
+}
 
-    const { id } = req.params;
+function pesquisar() {
 
-    const {
-        nome_receita,
-        descricao,
-        ingredientes,
-        modo_preparo,
-        tempo_preparo,
-        calorias,
-        custo_estimado,
-        id_categoria
-    } = req.body;
+    const texto =
+        document
+        .getElementById("pesquisa")
+        .value
+        .toLowerCase()
+        .trim();
 
-    const sql = `
-        UPDATE receitas
-        SET
-            nome_receita = ?,
-            descricao = ?,
-            ingredientes = ?,
-            modo_preparo = ?,
-            tempo_preparo = ?,
-            calorias = ?,
-            custo_estimado = ?,
-            id_categoria = ?
-        WHERE id_receita = ?
-    `;
+    if (texto === "") {
 
-    connection.query(
-        sql,
-        [
-            nome_receita,
-            descricao,
-            ingredientes,
-            modo_preparo,
-            tempo_preparo,
-            calorias,
-            custo_estimado,
-            id_categoria,
-            id
-        ],
-        (erro) => {
+        renderizarReceitas(
+            receitasGlobais
+        );
 
-            if (erro) {
-                console.error(erro);
-                return res.status(500).json({
-                    mensagem: "Erro ao atualizar receita."
-                });
-            }
+        return;
 
-            res.status(200).json({
-                mensagem: "Receita atualizada com sucesso!"
-            });
-        }
+    }
+
+    const resultado =
+        receitasGlobais.filter(
+            receita =>
+                receita.nome_receita
+                .toLowerCase()
+                .includes(texto)
+        );
+
+    renderizarReceitas(
+        resultado
     );
-});
 
-// Excluir receita
-router.delete("/:id", (req, res) => {
+}
 
-    const { id } = req.params;
+function filtrar() {
 
-    const sql = "DELETE FROM receitas WHERE id_receita = ?";
+    const valor =
+        document
+        .getElementById("filtro")
+        .value;
 
-    connection.query(sql, [id], (erro) => {
+    let lista =
+        [...receitasGlobais];
 
-        if (erro) {
-            console.error(erro);
-            return res.status(500).json({
-                mensagem: "Erro ao excluir receita."
-            });
-        }
+    if (valor === "az") {
 
-        res.status(200).json({
-            mensagem: "Receita removida com sucesso!"
-        });
-    });
+        lista.sort(
+            (a, b) =>
+                a.nome_receita.localeCompare(
+                    b.nome_receita
+                )
+        );
 
-});
+    }
 
-module.exports = router;
+    if (valor === "calorias") {
+
+        lista.sort(
+            (a, b) =>
+                a.calorias -
+                b.calorias
+        );
+
+    }
+
+    if (valor === "custo") {
+
+        lista.sort(
+            (a, b) =>
+                a.custo_estimado -
+                b.custo_estimado
+        );
+
+    }
+
+    renderizarReceitas(lista);
+
+}
+
+async function favoritar(idReceita) {
+
+    try {
+
+        const resposta =
+            await fetch(
+                "http://localhost:3000/favoritos",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                        "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        id_usuario: 1,
+                        id_receita: idReceita
+
+                    })
+
+                }
+            );
+
+        const dados =
+            await resposta.json();
+
+        alert(
+            dados.mensagem ||
+            "Receita favoritada!"
+        );
+
+    }
+
+    catch (erro) {
+
+        console.error(erro);
+
+        alert(
+            "Erro ao favoritar receita."
+        );
+
+    }
+
+}
+
+async function excluirReceita(id) {
+
+    const confirmar =
+        confirm(
+            "Deseja excluir esta receita?"
+        );
+
+    if (!confirmar) return;
+
+    try {
+
+        await fetch(
+            `http://localhost:3000/receitas/${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        carregarReceitas();
+
+    }
+
+    catch (erro) {
+
+        console.error(erro);
+
+        alert(
+            "Erro ao excluir receita."
+        );
+
+    }
+
+}

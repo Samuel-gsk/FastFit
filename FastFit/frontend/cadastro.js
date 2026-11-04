@@ -9,37 +9,43 @@ async function cadastrar() {
     const senha =
     document.getElementById("senha").value;
 
-    const resposta =
+    try {
+
+        const resposta =
         await fetch(
-
             "http://localhost:3000/usuarios/cadastro",
-
             {
-
                 method: "POST",
 
                 headers: {
-
                     "Content-Type":
                     "application/json"
-
                 },
 
                 body: JSON.stringify({
-
                     nome,
                     email,
                     senha
-
                 })
 
             }
-
         );
 
-    const dados =
+        const dados =
         await resposta.json();
 
-    alert(dados.mensagem);
+        alert(dados.mensagem);
+
+    }
+
+    catch (erro) {
+
+        console.error(erro);
+
+        alert(
+            "Erro ao conectar com o servidor."
+        );
+
+    }
 
 }

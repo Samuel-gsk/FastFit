@@ -21,11 +21,12 @@ const cadastro = async (req, res) => {
             (
                 nome,
                 email,
-                senha
+                senha,
+                tipo_usuario
             )
             VALUES
             (
-                ?, ?, ?
+                 ?, ?, ?, ?
             )
         `;
 
@@ -34,7 +35,8 @@ const cadastro = async (req, res) => {
             [
                 nome,
                 email,
-                senhaCriptografada
+                senhaCriptografada,
+                "usuario"
             ],
             (erro, resultado) => {
 
