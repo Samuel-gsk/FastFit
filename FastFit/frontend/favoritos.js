@@ -1,23 +1,84 @@
-const express = require("express");
+const api =
+"http://localhost:3000/favoritos";
 
-const router = express.Router();
+async function carregarFavoritos(){
 
-const favoritosController =
-require("../controllers/favoritosController");
+    const resposta =
+    await fetch(api);
 
-router.get(
-    "/",
-    favoritosController.listar
-);
+    const favoritos =
+    await resposta.json();
 
-router.post(
-    "/",
-    favoritosController.adicionar
-);
+    const lista =
+    document.getElementById(
+        "listaFavoritos"
+    );
 
-router.delete(
-    "/:id",
-    favoritosController.remover
-);
+    lista.innerHTML = "";
 
-module.exports = router;
+    if(favoritos.length === 0){
+
+        lista.innerHTML = `
+
+            <div class="sem-favoritos">
+
+                <h3>
+                    Nenhuma receita favoritada
+                </h3>
+
+                <p>
+                    Vá até a página de receitas
+                    e adicione suas preferidas.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+    favoritos.forEach(
+        favorito => {
+
+            lista.innerHTML += `
+
+                <div class="card">
+
+                    <h3>
+                        ⭐ ${favorito.nome_receita}
+                    </h3>
+
+                    <button
+                        onclick="
+                        removerFavorito(
+                        ${favorito.id_favorito}
+                        )">
+
+                        Remover
+
+                    </button>
+
+                </div>
+
+            `;
+        }
+    );
+}
+
+async function removerFavorito(id){
+
+    await fetch(
+
+        `http://localhost:3000/favoritos/${id}`,
+
+        {
+            method:"DELETE"
+        }
+
+    );
+
+    carregarFavoritos();
+}
+
+carregarFavoritos();
