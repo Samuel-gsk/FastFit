@@ -152,7 +152,10 @@ const login = (req, res) => {
                 mensagem:
                 "Login realizado",
 
-                token
+                token,
+
+                tipo:
+                usuario.tipo_usuario
 
             });
 

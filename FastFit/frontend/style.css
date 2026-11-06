@@ -932,3 +932,214 @@ footer{
     transform:
     translateY(0);
 }
+
+/* botão de add e del receita */
+
+#areaAdmin{
+
+    margin-bottom:20px;
+}
+
+#btnNovaReceita{
+
+    background:
+    linear-gradient(
+        135deg,
+        #14b8a6,
+        #0f766e
+    );
+
+    color:white;
+
+    border:none;
+
+    padding:12px 18px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+}
+
+#formReceita{
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:15px;
+
+    margin-bottom:20px;
+}
+
+#formReceita input,
+#formReceita textarea{
+
+    width:100%;
+
+    padding:10px;
+
+    margin-bottom:10px;
+}
+
+/* ======================= */
+/* FORMULÁRIO DE RECEITAS */
+/* ======================= */
+
+#formReceita{
+
+    background: white;
+
+    padding: 25px;
+
+    margin-bottom: 25px;
+
+    border-radius: 15px;
+
+    box-shadow:
+    0 8px 20px rgba(
+        0,
+        0,
+        0,
+        0.08
+    );
+}
+
+#formReceita h3{
+
+    color: #0f766e;
+
+    margin-bottom: 20px;
+}
+
+#formReceita input,
+#formReceita textarea{
+
+    width: 100%;
+
+    padding: 12px;
+
+    margin-bottom: 12px;
+
+    border: 2px solid #dbe4eb;
+
+    border-radius: 10px;
+
+    font-size: 1rem;
+}
+
+#formReceita input:focus,
+#formReceita textarea:focus{
+
+    outline: none;
+
+    border-color: #14b8a6;
+}
+
+#formReceita textarea{
+
+    min-height: 100px;
+
+    resize: vertical;
+}
+
+/* Botão Salvar Receita */
+
+#formReceita button{
+
+    width: 100%;
+
+    border: none;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #14b8a6,
+        #0f766e
+    );
+
+    color: white;
+
+    font-size: 1rem;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+    box-shadow:
+    0 6px 15px rgba(
+        20,
+        184,
+        166,
+        0.3
+    );
+}
+
+#formReceita button:hover{
+
+    transform:
+    translateY(-2px);
+
+    box-shadow:
+    0 10px 20px rgba(
+        20,
+        184,
+        166,
+        0.4
+    );
+}
+
+#formReceita button:active{
+
+    transform:
+    translateY(0);
+}
+
+.btn-excluir{
+
+    border: none;
+
+    padding: 10px 15px;
+
+    border-radius: 10px;
+
+    background: linear-gradient(
+        135deg,
+        #ef4444,
+        #b91c1c
+    );
+
+    color: white;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: .3s;
+
+    box-shadow:
+    0 6px 15px rgba(
+        239,
+        68,
+        68,
+        0.3
+    );
+}
+
+.btn-excluir:hover{
+
+    transform:
+    translateY(-2px);
+
+    box-shadow:
+    0 10px 20px rgba(
+        239,
+        68,
+        68,
+        0.4
+    );
+}

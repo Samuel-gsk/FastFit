@@ -40,19 +40,23 @@ async function login() {
     const dados =
         await resposta.json();
 
-    if (dados.token) {
+  if (dados.token) {
 
-        localStorage.setItem(
-            "token",
-            dados.token
-        );
+    localStorage.setItem(
+        "token",
+        dados.token
+    );
 
-        alert("Login realizado!");
+    localStorage.setItem(
+        "tipo_usuario",
+        dados.tipo
+    );
 
-        window.location.href =
-        "index.html";
+    alert("Login realizado!");
 
-    }
+    window.location.href =
+    "index.html";
+}
 
     else {
 

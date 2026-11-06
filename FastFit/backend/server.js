@@ -6,7 +6,7 @@ const path = require("path");
 
 const app = express();
 
-// Banco
+// Conexão com o banco
 require("./database/connection");
 
 // Rotas
@@ -25,7 +25,7 @@ app.use(
     )
 );
 
-// Rotas da API
+// API
 app.use("/receitas", receitasRoutes);
 app.use("/favoritos", favoritosRoutes);
 app.use("/usuarios", usuariosRoutes);
@@ -40,11 +40,10 @@ app.get("/", (req, res) => {
         )
     );
 
-    });
+});
 
 // Porta
-const PORT =
-process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
 

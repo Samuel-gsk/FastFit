@@ -1,20 +1,61 @@
 const api = "http://localhost:3000/receitas";
 
 let receitasGlobais = [];
+let receitaEditando = null;
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    document
-        .getElementById("btnMostrar")
-        .addEventListener("click", carregarReceitas);
+    const tipoUsuario =
+        localStorage.getItem("tipo_usuario");
 
-    document
-        .getElementById("pesquisa")
-        .addEventListener("input", pesquisar);
+    if (tipoUsuario !== "administrador") {
 
-    document
-        .getElementById("filtro")
-        .addEventListener("change", filtrar);
+        const areaAdmin =
+            document.getElementById("areaAdmin");
+
+        if (areaAdmin) {
+
+            areaAdmin.style.display = "none";
+
+        }
+
+    }
+
+    const btnMostrar =
+        document.getElementById("btnMostrar");
+
+    if (btnMostrar) {
+
+        btnMostrar.addEventListener(
+            "click",
+            carregarReceitas
+        );
+
+    }
+
+    const campoPesquisa =
+        document.getElementById("pesquisa");
+
+    if (campoPesquisa) {
+
+        campoPesquisa.addEventListener(
+            "input",
+            pesquisar
+        );
+
+    }
+
+    const filtro =
+        document.getElementById("filtro");
+
+    if (filtro) {
+
+        filtro.addEventListener(
+            "change",
+            filtrar
+        );
+
+    }
 
 });
 
@@ -22,11 +63,15 @@ async function carregarReceitas() {
 
     try {
 
-        const resposta = await fetch(api);
+        const resposta =
+            await fetch(api);
 
-        receitasGlobais = await resposta.json();
+        receitasGlobais =
+            await resposta.json();
 
-        renderizarReceitas(receitasGlobais);
+        renderizarReceitas(
+            receitasGlobais
+        );
 
     }
 
@@ -44,9 +89,18 @@ async function carregarReceitas() {
 function renderizarReceitas(receitas) {
 
     const tbody =
-        document.getElementById("tbodyReceitas");
+        document.getElementById(
+            "tbodyReceitas"
+        );
+
+    if (!tbody) return;
 
     tbody.innerHTML = "";
+
+    const tipoUsuario =
+        localStorage.getItem(
+            "tipo_usuario"
+        );
 
     receitas.forEach(receita => {
 
@@ -69,19 +123,45 @@ function renderizarReceitas(receitas) {
                 <td>
 
                     <button
-                        onclick="mostrarDetalhes(${receita.id_receita})">
+                    onclick="mostrarDetalhes(${receita.id_receita})">
                         Ver
                     </button>
 
                     <button
-                        onclick="favoritar(${receita.id_receita})">
+                    onclick="favoritar(${receita.id_receita})">
                         ⭐
                     </button>
 
+                    ${
+
+                    tipoUsuario === "administrador"
+
+                    ?
+
+                    `
+
                     <button
-                        onclick="excluirReceita(${receita.id_receita})">
-                        🗑
+                    onclick="editarReceita(${receita.id_receita})">
+
+                        ✏ Editar
+
                     </button>
+
+                    <button
+                    class="btn-excluir"
+                    onclick="excluirReceita(${receita.id_receita})">
+
+                        🗑 Excluir
+
+                    </button>
+
+                    `
+
+                    :
+
+                    ""
+
+                    }
 
                 </td>
 
@@ -97,7 +177,7 @@ function mostrarDetalhes(id) {
 
     const receita =
         receitasGlobais.find(
-            receita => receita.id_receita == id
+            r => r.id_receita == id
         );
 
     if (!receita) return;
@@ -116,7 +196,7 @@ Modo de preparo:
 ${receita.modo_preparo}
 
 Tempo:
-${receita.tempo_preparo} minutos
+${receita.tempo_preparo} min
 
 Calorias:
 ${receita.calorias}
@@ -132,25 +212,26 @@ function pesquisar() {
 
     const texto =
         document
-            .getElementById("pesquisa")
-            .value
-            .toLowerCase()
-            .trim();
+        .getElementById("pesquisa")
+        .value
+        .toLowerCase()
+        .trim();
 
     if (texto === "") {
 
-        renderizarReceitas(receitasGlobais);
-        return;
+        renderizarReceitas(
+            receitasGlobais
+        );
 
+        return;
     }
 
     const resultado =
-        receitasGlobais.filter(receita =>
-
+        receitasGlobais.filter(
+            receita =>
             receita.nome_receita
-                .toLowerCase()
-                .includes(texto)
-
+            .toLowerCase()
+            .includes(texto)
         );
 
     renderizarReceitas(resultado);
@@ -160,13 +241,17 @@ function pesquisar() {
 function filtrar() {
 
     const valor =
-        document.getElementById("filtro").value;
+        document
+        .getElementById("filtro")
+        .value;
 
-    let lista = [...receitasGlobais];
+    let lista =
+        [...receitasGlobais];
 
     if (valor === "az") {
 
-        lista.sort((a, b) =>
+        lista.sort(
+            (a, b) =>
             a.nome_receita.localeCompare(
                 b.nome_receita
             )
@@ -176,16 +261,20 @@ function filtrar() {
 
     if (valor === "calorias") {
 
-        lista.sort((a, b) =>
-            a.calorias - b.calorias
+        lista.sort(
+            (a, b) =>
+            a.calorias -
+            b.calorias
         );
 
     }
 
     if (valor === "custo") {
 
-        lista.sort((a, b) =>
-            a.custo_estimado - b.custo_estimado
+        lista.sort(
+            (a, b) =>
+            a.custo_estimado -
+            b.custo_estimado
         );
 
     }
@@ -204,7 +293,8 @@ async function favoritar(idReceita) {
                 method: "POST",
 
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type":
+                    "application/json"
                 },
 
                 body: JSON.stringify({
@@ -234,14 +324,16 @@ async function favoritar(idReceita) {
 async function excluirReceita(id) {
 
     const confirmar =
-        confirm("Deseja excluir esta receita?");
+        confirm(
+            "Deseja excluir esta receita?"
+        );
 
     if (!confirmar) return;
 
     try {
 
         await fetch(
-            `http://://localhost:3000/receitas/${id}`,
+            `http://localhost:3000/receitas/${id}`,
             {
                 method: "DELETE"
             }
@@ -253,11 +345,270 @@ async function excluirReceita(id) {
 
     catch (erro) {
 
-        console.error(
-            "Erro ao excluir:",
-            erro
+        console.error(erro);
+
+    }
+
+}
+
+function abrirFormulario() {
+
+    receitaEditando = null;
+
+    document.getElementById(
+        "formReceita"
+    ).style.display = "block";
+
+}
+
+async function salvarReceita() {
+
+    try {
+
+        const dados = {
+
+            nome_receita:
+            document.getElementById(
+                "nomeReceita"
+            ).value,
+
+            descricao:
+            document.getElementById(
+                "descricaoReceita"
+            ).value,
+
+            ingredientes:
+            document.getElementById(
+                "ingredientesReceita"
+            ).value,
+
+            modo_preparo:
+            document.getElementById(
+                "modoReceita"
+            ).value,
+
+            tempo_preparo:
+            document.getElementById(
+                "tempoReceita"
+            ).value,
+
+            calorias:
+            document.getElementById(
+                "caloriasReceita"
+            ).value,
+
+            custo_estimado:
+            document.getElementById(
+                "custoReceita"
+            ).value,
+
+            id_categoria: 1
+
+        };
+
+        let url = api;
+        let metodo = "POST";
+
+        if (receitaEditando !== null) {
+
+            url =
+            `${api}/${receitaEditando}`;
+
+            metodo = "PUT";
+
+        }
+
+        const resposta =
+            await fetch(
+                url,
+                {
+
+                    method: metodo,
+
+                    headers: {
+
+                        "Content-Type":
+                        "application/json"
+
+                    },
+
+                    body:
+                    JSON.stringify(
+                        dados
+                    )
+
+                }
+            );
+
+        const resultado =
+            await resposta.json();
+
+        alert(
+            resultado.mensagem
+        );
+
+        receitaEditando = null;
+
+        document.getElementById(
+            "formReceita"
+        ).style.display =
+        "none";
+
+        carregarReceitas();
+
+    }
+
+    catch (erro) {
+
+        console.error(erro);
+
+        alert(
+            "Erro ao salvar receita."
         );
 
     }
+
+}
+
+async function atualizarReceita(id) {
+
+    try {
+
+        const resposta =
+
+        await fetch(
+
+            `http://localhost:3000/receitas/${id}`,
+
+            {
+
+                method: "PUT",
+
+                headers: {
+
+                    "Content-Type":
+                    "application/json"
+
+                },
+
+                body: JSON.stringify({
+
+                    nome_receita:
+                    document.getElementById(
+                        "nomeReceita"
+                    ).value,
+
+                    descricao:
+                    document.getElementById(
+                        "descricaoReceita"
+                    ).value,
+
+                    ingredientes:
+                    document.getElementById(
+                        "ingredientesReceita"
+                    ).value,
+
+                    modo_preparo:
+                    document.getElementById(
+                        "modoReceita"
+                    ).value,
+
+                    tempo_preparo:
+                    document.getElementById(
+                        "tempoReceita"
+                    ).value,
+
+                    calorias:
+                    document.getElementById(
+                        "caloriasReceita"
+                    ).value,
+
+                    custo_estimado:
+                    document.getElementById(
+                        "custoReceita"
+                    ).value,
+
+                    id_categoria: 1
+
+                })
+
+            }
+
+        );
+
+        const dados =
+        await resposta.json();
+
+        alert(
+            dados.mensagem
+        );
+
+        carregarReceitas();
+
+        document.getElementById(
+            "formReceita"
+        ).style.display =
+        "none";
+
+    }
+
+    catch (erro) {
+
+        console.error(erro);
+
+    }
+
+}
+
+function editarReceita(id) {
+
+    const receita =
+        receitasGlobais.find(
+            r => r.id_receita == id
+        );
+
+    if (!receita) return;
+
+    receitaEditando = id;
+
+    document.getElementById(
+        "formReceita"
+    ).style.display =
+    "block";
+
+    document.getElementById(
+        "nomeReceita"
+    ).value =
+    receita.nome_receita;
+
+    document.getElementById(
+        "descricaoReceita"
+    ).value =
+    receita.descricao;
+
+    document.getElementById(
+        "ingredientesReceita"
+    ).value =
+    receita.ingredientes;
+
+    document.getElementById(
+        "modoReceita"
+    ).value =
+    receita.modo_preparo;
+
+    document.getElementById(
+        "tempoReceita"
+    ).value =
+    receita.tempo_preparo;
+
+    document.getElementById(
+        "caloriasReceita"
+    ).value =
+    receita.calorias;
+
+    document.getElementById(
+        "custoReceita"
+    ).value =
+    receita.custo_estimado;
 
 }

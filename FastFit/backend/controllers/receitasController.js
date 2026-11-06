@@ -1,51 +1,79 @@
-const connection = require("../database/connection");
+const connection =
+require("../database/connection");
 
-// Listar receitas
+// LISTAR
 const listarReceitas = (req, res) => {
 
-    const sql = "SELECT * FROM receitas";
+    const sql =
+    "SELECT * FROM receitas";
 
-    connection.query(sql, (erro, resultados) => {
+    connection.query(
+        sql,
+        (erro, resultados) => {
 
-        if (erro) {
-            return res.status(500).json({
-                mensagem: "Erro ao buscar receitas."
-            });
+            if (erro) {
+
+                return res
+                .status(500)
+                .json(erro);
+
+            }
+
+            res.json(resultados);
+
         }
+    );
 
-        res.status(200).json(resultados);
-    });
 };
 
-// Buscar receita por ID
+// BUSCAR POR ID
 const buscarReceitaPorId = (req, res) => {
 
     const { id } = req.params;
 
-    const sql = "SELECT * FROM receitas WHERE id_receita = ?";
+    const sql =
+    "SELECT * FROM receitas WHERE id_receita = ?";
 
-    connection.query(sql, [id], (erro, resultados) => {
+    connection.query(
+        sql,
+        [id],
+        (erro, resultados) => {
 
-        if (erro) {
-            return res.status(500).json({
-                mensagem: "Erro ao buscar receita."
-            });
+            if (erro) {
+
+                return res
+                .status(500)
+                .json(erro);
+
+            }
+
+            if (
+                resultados.length === 0
+            ) {
+
+                return res
+                .status(404)
+                .json({
+
+                    mensagem:
+                    "Receita não encontrada"
+
+                });
+
+            }
+
+            res.json(resultados[0]);
+
         }
+    );
 
-        if (resultados.length === 0) {
-            return res.status(404).json({
-                mensagem: "Receita não encontrada."
-            });
-        }
-
-        res.status(200).json(resultados[0]);
-    });
 };
 
-// Cadastrar receita
+// CADASTRAR
 const cadastrarReceita = (req, res) => {
 
     const {
+
         nome_receita,
         descricao,
         ingredientes,
@@ -54,13 +82,40 @@ const cadastrarReceita = (req, res) => {
         calorias,
         custo_estimado,
         id_categoria
+
     } = req.body;
+
+    if (
+        !nome_receita ||
+        !ingredientes ||
+        !modo_preparo
+    ) {
+
+        return res
+        .status(400)
+        .json({
+
+            mensagem:
+            "Preencha todos os campos obrigatórios."
+
+        });
+
+    }
 
     const sql = `
         INSERT INTO receitas
-        (nome_receita, descricao, ingredientes, modo_preparo,
-        tempo_preparo, calorias, custo_estimado, id_categoria)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        (
+            nome_receita,
+            descricao,
+            ingredientes,
+            modo_preparo,
+            tempo_preparo,
+            calorias,
+            custo_estimado,
+            id_categoria
+        )
+        VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     connection.query(
@@ -78,25 +133,35 @@ const cadastrarReceita = (req, res) => {
         (erro, resultado) => {
 
             if (erro) {
-                return res.status(500).json({
-                    mensagem: "Erro ao cadastrar receita."
-                });
+
+                return res
+                .status(500)
+                .json(erro);
+
             }
 
             res.status(201).json({
-                mensagem: "Receita cadastrada com sucesso!",
-                id: resultado.insertId
+
+                mensagem:
+                "Receita cadastrada com sucesso!",
+
+                id_receita:
+                resultado.insertId
+
             });
+
         }
     );
+
 };
 
-// Atualizar receita
+// ATUALIZAR
 const atualizarReceita = (req, res) => {
 
     const { id } = req.params;
 
     const {
+
         nome_receita,
         descricao,
         ingredientes,
@@ -105,25 +170,29 @@ const atualizarReceita = (req, res) => {
         calorias,
         custo_estimado,
         id_categoria
+
     } = req.body;
 
     const sql = `
         UPDATE receitas
         SET
-            nome_receita = ?,
-            descricao = ?,
-            ingredientes = ?,
-            modo_preparo = ?,
-            tempo_preparo = ?,
-            calorias = ?,
-            custo_estimado = ?,
-            id_categoria = ?
+
+        nome_receita = ?,
+        descricao = ?,
+        ingredientes = ?,
+        modo_preparo = ?,
+        tempo_preparo = ?,
+        calorias = ?,
+        custo_estimado = ?,
+        id_categoria = ?
+
         WHERE id_receita = ?
     `;
 
     connection.query(
         sql,
         [
+
             nome_receita,
             descricao,
             ingredientes,
@@ -133,47 +202,69 @@ const atualizarReceita = (req, res) => {
             custo_estimado,
             id_categoria,
             id
+
         ],
         (erro) => {
 
             if (erro) {
-                return res.status(500).json({
-                    mensagem: "Erro ao atualizar receita."
-                });
+
+                return res
+                .status(500)
+                .json(erro);
+
             }
 
-            res.status(200).json({
-                mensagem: "Receita atualizada com sucesso!"
+            res.json({
+
+                mensagem:
+                "Receita atualizada!"
+
             });
+
         }
     );
+
 };
 
-// Excluir receita
+// EXCLUIR
 const excluirReceita = (req, res) => {
 
     const { id } = req.params;
 
-    const sql = "DELETE FROM receitas WHERE id_receita = ?";
+    const sql =
+    "DELETE FROM receitas WHERE id_receita = ?";
 
-    connection.query(sql, [id], (erro) => {
+    connection.query(
+        sql,
+        [id],
+        (erro) => {
 
-        if (erro) {
-            return res.status(500).json({
-                mensagem: "Erro ao excluir receita."
+            if (erro) {
+
+                return res
+                .status(500)
+                .json(erro);
+
+            }
+
+            res.json({
+
+                mensagem:
+                "Receita removida!"
+
             });
-        }
 
-        res.status(200).json({
-            mensagem: "Receita removida com sucesso!"
-        });
-    });
+        }
+    );
+
 };
 
 module.exports = {
+
     listarReceitas,
     buscarReceitaPorId,
     cadastrarReceita,
     atualizarReceita,
     excluirReceita
+
 };

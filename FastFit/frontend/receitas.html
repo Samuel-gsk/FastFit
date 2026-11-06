@@ -12,23 +12,102 @@
 <body>
 
     <header>
+
         <nav class="navbar">
 
             <h1>FastFit</h1>
 
             <ul>
+
                 <li><a href="index.html">Início</a></li>
+
                 <li><a href="receitas.html">Receitas</a></li>
+
                 <li><a href="planejamento.html">Planejamento</a></li>
+
                 <li><a href="favoritos.html">Favoritos</a></li>
+
             </ul>
 
         </nav>
+
     </header>
 
     <main class="container">
 
         <h2>Receitas Saudáveis</h2>
+
+        <!-- Área Admin -->
+
+        <div id="areaAdmin">
+
+            <button
+                id="btnNovaReceita"
+                onclick="abrirFormulario()"
+            >
+                ➕ Nova Receita
+            </button>
+
+        </div>
+
+        <!-- Formulário -->
+
+        <div
+            id="formReceita"
+            style="display:none"
+        >
+
+            <h3>Nova Receita</h3>
+
+            <input
+                type="text"
+                id="nomeReceita"
+                placeholder="Nome da receita"
+            >
+
+            <textarea
+                id="descricaoReceita"
+                placeholder="Descrição"
+            ></textarea>
+
+            <textarea
+                id="ingredientesReceita"
+                placeholder="Ingredientes"
+            ></textarea>
+
+            <textarea
+                id="modoReceita"
+                placeholder="Modo de preparo"
+            ></textarea>
+
+            <input
+                type="number"
+                id="tempoReceita"
+                placeholder="Tempo de preparo"
+            >
+
+            <input
+                type="number"
+                id="caloriasReceita"
+                placeholder="Calorias"
+            >
+
+            <input
+                type="number"
+                id="custoReceita"
+                placeholder="Custo"
+            >
+
+            <button
+                id="btnSalvar"
+                onclick="salvarReceita()">
+                Salvar Receita
+            </button>
+
+
+        </div>
+
+        <!-- Barra de pesquisa -->
 
         <div class="barra-controle">
 
@@ -39,7 +118,7 @@
             <input
                 type="text"
                 id="pesquisa"
-                placeholder="🔍 Pesquise uma receita..."
+                placeholder="🔍 Pesquisar receita..."
             >
 
             <select id="filtro">
@@ -63,6 +142,8 @@
             </select>
 
         </div>
+
+        <!-- Tabela -->
 
         <table id="tabelaReceitas">
 
