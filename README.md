@@ -1,109 +1,194 @@
 FastFit
-Descrição do Problema
+📌 Sobre o Projeto
 
-Atualmente, muitas pessoas possuem uma rotina corrida devido aos estudos, trabalho e outras atividades diárias. Como consequência, acabam consumindo refeições industrializadas, fast foods tradicionais e alimentos com baixo valor nutricional por acreditarem que preparar refeições saudáveis exige muito tempo e dinheiro.
+O FastFit é uma plataforma web desenvolvida para ajudar pessoas com rotinas corridas a manterem uma alimentação saudável de forma simples e acessível.
 
-Além disso, existe uma dificuldade em encontrar receitas rápidas, acessíveis e nutritivas que possam ser preparadas no dia a dia.
+O sistema permite consultar receitas rápidas e nutritivas, organizar refeições da semana, salvar receitas favoritas e gerenciar conteúdos através de diferentes níveis de acesso.
 
-Público Afetado
+🎯 Problema Identificado
 
-O FastFit foi desenvolvido pensando principalmente em:
+Atualmente, muitas pessoas possuem uma rotina intensa devido aos estudos, trabalho e demais compromissos diários.
+
+Como consequência, acabam recorrendo frequentemente a alimentos industrializados e refeições pouco saudáveis por acreditarem que preparar uma alimentação equilibrada exige muito tempo e dinheiro.
+
+Além disso, existe dificuldade em encontrar receitas rápidas, econômicas e nutritivas para o dia a dia.
+
+👥 Público-Alvo
+
+O FastFit foi desenvolvido para:
 
 Estudantes;
 Trabalhadores com rotina intensa;
-Pessoas que desejam melhorar seus hábitos alimentares;
+Pessoas que buscam alimentação saudável;
 Pessoas em processo de emagrecimento;
-Usuários que buscam refeições saudáveis com baixo custo;
-Pessoas com pouco tempo disponível para cozinhar.
-Proposta de Solução
+Usuários com pouco tempo disponível para cozinhar;
+Pessoas interessadas em refeições nutritivas e econômicas.
 
-O FastFit é uma plataforma web que permite aos usuários consultar receitas saudáveis, rápidas e econômicas.
+💡 Solução Proposta
 
-O sistema oferece funcionalidades para pesquisa de receitas, organização de planejamentos semanais, gerenciamento de receitas favoritas e avaliações de pratos, promovendo uma alimentação mais saudável e organizada.
+O FastFit oferece uma plataforma centralizada onde os usuários podem:
 
-Principais Funcionalidades
+Consultar receitas saudáveis;
+Favoritar receitas;
+Organizar seu planejamento alimentar semanal;
+Avaliar receitas;
+Buscar refeições rápidas e econômicas.
+
+A proposta é incentivar hábitos alimentares mais saudáveis de forma prática e acessível.
+
+🚀 Funcionalidades
 Receitas
-Listar receitas disponíveis;
+Listar receitas cadastradas;
 Pesquisar receitas pelo nome;
-Filtrar receitas por critérios;
-Visualizar detalhes das receitas;
-Cadastrar novas receitas;
-Editar receitas existentes;
+Filtrar receitas;
+Visualizar detalhes;
+Cadastrar receitas;
+Editar receitas;
 Excluir receitas.
-
 Favoritos
 Adicionar receitas aos favoritos;
 Visualizar favoritos;
-Remover receitas dos favoritos.
-
+Remover favoritos.
 Planejamento Semanal
-Selecionar receitas para cada dia da semana;
-Visualizar planejamento semanal;
-Atualizar planejamento;
-Remover receitas do planejamento.
-
+Selecionar receitas para os dias da semana;
+Visualizar planejamento;
+Atualizar planejamento.
 Avaliações
 Avaliar receitas;
-Registrar comentários sobre receitas.
+Registrar comentários.
 Usuários
-Cadastro de usuários;
-Gerenciamento de dados pessoais;
-Controle de acesso ao sistema.
+Cadastro;
+Login;
+Controle de permissões;
+Autenticação com JWT.
 
-Tipos de Usuários e Ações Previstas
+🔑 Tipos de Usuário
 Usuário Comum
 
-O usuário comum poderá:
+Pode:
 
 Visualizar receitas;
 Pesquisar receitas;
 Filtrar receitas;
 Favoritar receitas;
-Remover receitas dos favoritos;
+Gerenciar favoritos;
 Criar planejamento semanal;
-Editar planejamento semanal;
-Avaliar receitas;
 Visualizar informações nutricionais.
 Administrador
 
-O administrador será responsável por:
+Pode:
 
 Cadastrar receitas;
 Editar receitas;
-Remover receitas;
-Gerenciar categorias;
-Gerenciar avaliações;
-Gerenciar informações do sistema.
+Excluir receitas;
+Gerenciar conteúdos do sistema;
+Controlar informações disponíveis aos usuários.
 
-Fluxo Básico de Funcionamento
+🔒 Controle de Acesso
+
+O sistema utiliza autenticação baseada em JWT (JSON Web Token).
+
+As permissões são verificadas tanto no Front-End quanto na API.
+
+Usuário comum
+
+Não possui acesso às operações administrativas.
+
+Administrador
+
+Possui acesso às operações:
+
 Plain Text
-INÍCIO
+POST /receitas
+PUT /receitas/:id
+DELETE /receitas/:id
+
+As permissões são verificadas através dos middlewares:
+
+Plain Text
+auth.js
+admin.js
+
+🔄 Fluxo de Funcionamento
+Plain Text
+Início
 │
 ▼
-Acesso ao FastFit
+Login / Cadastro
 │
 ▼
 Página Inicial
 │
-├────► Receitas
-│ │
-│ ├── Pesquisar receitas
-│ ├── Filtrar receitas
-│ ├── Visualizar detalhes
-│ └── Favoritar receita
+├── Receitas
+│ ├── Visualizar
+│ ├── Pesquisar
+│ ├── Filtrar
+│ ├── Favoritar
+│ └── Avaliar
 │
-├────► Planejamento Semanal
-│ │
-│ ├── Selecionar receita
-│ ├── Salvar planejamento
-│ └── Atualizar planejamento
+├── Favoritos
+│ ├── Visualizar
+│ └── Remover
 │
-└────► Favoritos
-│
-├── Visualizar favoritos
-└── Remover favoritos
+└── Planejamento Semanal
+├── Selecionar receitas
+├── Salvar
+└── Atualizar
  
-Estrutura do Projeto
+🗄️ Banco de Dados
+
+O sistema utiliza MySQL e possui as seguintes tabelas:
+
+Plain Text
+usuarios
+categorias
+receitas
+favoritos
+planejamento_semanal
+avaliacoes
+Principais Relacionamentos
+Plain Text
+usuarios
+│
+├── favoritos
+│
+├── planejamento_semanal
+│
+└── avaliacoes
+ 
+receitas
+│
+├── favoritos
+│
+├── planejamento_semanal
+│
+└── avaliacoes
+
+Todos os relacionamentos utilizam:
+
+SQL
+FOREIGN KEY
+
+garantindo a integridade dos dados.
+
+🛠️ Tecnologias Utilizadas
+Front-End
+HTML5
+CSS3
+JavaScript
+Back-End
+Node.js
+Express.js
+Banco de Dados
+MySQL
+Segurança
+JWT (JSON Web Token)
+Bcrypt
+Integração
+API REST
+Fetch API
+
+📁 Estrutura do Projeto
 Plain Text
 FastFit
 │
@@ -117,46 +202,84 @@ FastFit
 │
 ├── frontend
 │ ├── index.html
+│ ├── login.html
+│ ├── cadastro.html
 │ ├── receitas.html
-│ ├── planejamento.html
 │ ├── favoritos.html
+│ ├── planejamento.html
 │ ├── style.css
-│ ├── script.js
+│ ├── login.js
+│ ├── cadastro.js
 │ ├── receitas.js
-│ ├── planejamento.js
-│ └── favoritos.js
+│ ├── favoritos.js
+│ └── planejamento.js
 │
 ├── sql
 │ └── fastfit.sql
 │
-├── README.md
+└── README.md
 
-Tecnologias Utilizadas
-Front-end
-HTML5
-CSS3
-JavaScript
-Back-end
-Node.js
-Express.js
-Banco de Dados
-MySQL
-Integração
-API REST
-Fetch API
-Modelo de Banco de Dados
+⚙️ Instalação
 
-O sistema utiliza um banco de dados relacional composto pelas seguintes tabelas:
+Clone o repositório:
 
-usuarios
-categorias
-receitas
-favoritos
-planejamento_semanal
-avaliacoes
+Shell
+git clone URL_DO_REPOSITORIO
 
-Os relacionamentos são realizados por meio de chaves estrangeiras (Foreign Keys), garantindo integridade dos dados.
+Entre na pasta:
 
-Objetivo Final
+Shell
+cd FastFit/backend
 
-O FastFit tem como objetivo incentivar hábitos alimentares mais saudáveis por meio de uma plataforma prática e acessível, oferecendo receitas rápidas, econômicas e nutritivas para pessoas com pouco tempo disponível no dia a dia.
+Instale as dependências:
+
+Shell
+npm install
+
+▶️ Execução
+
+Inicie o servidor:
+
+Shell
+node server.js
+
+A aplicação estará disponível em:
+
+Plain Text
+http://localhost:3000
+
+📡 Principais Rotas da API
+Usuários
+HTTP
+POST /usuarios/cadastro
+POST /usuarios/login
+Receitas
+HTTP
+GET /receitas
+GET /receitas/:id
+POST /receitas
+PUT /receitas/:id
+DELETE /receitas/:id
+Favoritos
+HTTP
+GET /favoritos
+POST /favoritos
+DELETE /favoritos/:id
+
+🧪 Como Testar
+Usuário Comum
+Criar conta;
+Fazer login;
+Visualizar receitas;
+Favoritar receitas;
+Criar planejamento semanal.
+Administrador
+Fazer login como administrador;
+Criar receitas;
+Editar receitas;
+Excluir receitas;
+Gerenciar conteúdos do sistema.
+
+✅ Objetivo Final
+
+O FastFit busca incentivar hábitos alimentares mais saudáveis por meio de uma plataforma simples, moderna e acessível, permitindo que pessoas com pouco tempo disponível encontrem refeições práticas, econômicas e nutritivas para o dia a dia.
