@@ -333,11 +333,22 @@ async function excluirReceita(id) {
     try {
 
         await fetch(
-            `http://localhost:3000/receitas/${id}`,
-            {
-                method: "DELETE"
-            }
-        );
+    `${api}/${id}`,
+    {
+
+        method: "DELETE",
+
+        headers: {
+
+            Authorization:
+            localStorage.getItem(
+                "token"
+            )
+
+        }
+
+    }
+);
 
         carregarReceitas();
 
@@ -425,10 +436,15 @@ async function salvarReceita() {
 
                     method: metodo,
 
-                    headers: {
+                  headers: {
 
                         "Content-Type":
-                        "application/json"
+                    "application/json",
+
+                    Authorization:
+                    localStorage.getItem(
+                    "token"
+                        )
 
                     },
 
@@ -484,12 +500,17 @@ async function atualizarReceita(id) {
 
                 method: "PUT",
 
-                headers: {
+            headers: {
 
-                    "Content-Type":
-                    "application/json"
+                "Content-Type":
+                "application/json",
 
-                },
+                Authorization:
+                localStorage.getItem(
+                    "token"
+                    )
+
+                    },
 
                 body: JSON.stringify({
 
